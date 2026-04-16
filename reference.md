@@ -56,7 +56,7 @@ Canonical names from the wiki. Use this to validate code before running in-game.
 - `Items.Pumpkin_Seed`
 - `Items.Sunflower_Seed`
 - `Items.Power`
-- `Items.Water_Tank`
+- `Items.Water`
 - `Items.Fertilizer`
 - `Items.Egg`
 - `Items.Cactus`

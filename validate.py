@@ -32,7 +32,7 @@ VALID_GROUNDS = {
 
 VALID_ITEMS = {
     "Hay", "Wood", "Carrot", "Carrot_Seed", "Pumpkin", "Pumpkin_Seed",
-    "Sunflower_Seed", "Power", "Water_Tank", "Fertilizer", "Egg",
+    "Sunflower_Seed", "Power", "Water", "Fertilizer", "Egg",
     "Cactus", "Cactus_Seed", "Bone", "Gold",
 }
 

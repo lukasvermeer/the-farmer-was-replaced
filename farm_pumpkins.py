@@ -41,7 +41,7 @@ def plant_and_grow(px, py, size):
 			# At water 0.75: 2s * 4 = 8s effective -- one dose is enough
 			if not can_harvest():
 				if get_water() < 0.75:
-					use_item(Items.Water_Tank)
+					use_item(Items.Water)
 				use_item(Items.Fertilizer)
 
 def all_harvestable(px, py, size):
