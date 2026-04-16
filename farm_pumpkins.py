@@ -1,7 +1,6 @@
 # Pumpkin farming script
-# Strategy: grow 6x6 mega pumpkins for max yield (n^2 * 6 = 216 per harvest)
-# Uses fertilizer + water to speed growth, replants dead pumpkins
-# Tiles the full 32x32 grid with 25 patches of 6x6
+# Strategy: grow one massive mega pumpkin across the entire field
+# Yield = n^2 * 6 = 32^2 * 6 = 6144 per harvest
 
 def go_to(tx, ty):
 	cx = get_pos_x()
@@ -21,76 +20,51 @@ def go_to(tx, ty):
 		for i in range(-dy):
 			move(South)
 
-def prepare_soil(px, py, size):
+def prepare_soil():
+	size = get_world_size()
 	for y in range(size):
 		for x in range(size):
-			go_to(px + x, py + y)
+			go_to(x, y)
 			if get_ground_type() != Grounds.Soil:
 				till()
 
-def plant_and_grow(px, py, size):
-	# Plant pumpkins, water, and fertilize in one pass
+def plant_and_grow():
+	# Plant pumpkins on empty tiles, water + fertilize non-ready ones
+	size = get_world_size()
 	for y in range(size):
 		for x in range(size):
-			go_to(px + x, py + y)
-			entity = get_entity_type()
-			if entity != Entities.Pumpkin:
+			go_to(x, y)
+			if get_entity_type() != Entities.Pumpkin:
 				plant(Entities.Pumpkin)
-			# Water + fertilize to insta-grow
-			# Max growth time 3.8s, fertilizer gives 2s * (1 + water*4)
-			# At water 0.75: 2s * 4 = 8s effective -- one dose is enough
 			if not can_harvest():
 				if get_water() < 0.75:
 					use_item(Items.Water)
 				use_item(Items.Fertilizer)
 
-def all_harvestable(px, py, size):
-	# Check if all tiles have harvestable pumpkins
-	# Also replant dead ones (pumpkin entity but not harvestable 
-	# after fertilization means dead)
+def check_and_replant():
+	# Returns True if all tiles are harvestable pumpkins
+	# Replants any dead/missing ones
+	size = get_world_size()
 	all_ready = True
 	for y in range(size):
 		for x in range(size):
-			go_to(px + x, py + y)
+			go_to(x, y)
 			if get_entity_type() != Entities.Pumpkin:
-				# Empty or wrong entity
 				plant(Entities.Pumpkin)
 				all_ready = False
 			elif not can_harvest():
-				# Dead or still growing -- replant to be safe
-				# (planting on dead pumpkin replaces it)
+				# Dead pumpkin -- replant over it
 				plant(Entities.Pumpkin)
 				all_ready = False
 	return all_ready
 
-def farm_patch(px, py, size):
-	prepare_soil(px, py, size)
-	
-	# Plant + fertilize, then check. Repeat until all 36 alive.
-	planted = False
-	while not planted:
-		plant_and_grow(px, py, size)
-		planted = all_harvestable(px, py, size)
-	
-	# Harvest the mega pumpkin
-	go_to(px, py)
-	harvest()
-
-# Main loop: farm 25 patches of 6x6 across the 32x32 grid
-patch_size = 6
-# Only prepare soil once on first run
-first_run = True
+# Main loop
+prepare_soil()
 while True:
-	for py in range(0, 30, patch_size):
-		for px in range(0, 30, patch_size):
-			if first_run:
-				farm_patch(px, py, patch_size)
-			else:
-				# Soil is already tilled, skip prepare_soil
-				planted = False
-				while not planted:
-					plant_and_grow(px, py, patch_size)
-					planted = all_harvestable(px, py, patch_size)
-				go_to(px, py)
-				harvest()
-	first_run = False
+	# Plant and fertilize everything
+	plant_and_grow()
+	# Keep replanting dead ones until all 1024 are ready
+	while not check_and_replant():
+		plant_and_grow()
+	# Harvest the mega pumpkin
+	harvest()
