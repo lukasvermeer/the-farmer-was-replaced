@@ -111,7 +111,7 @@ def farm_sunflowers():
 
 def farm_carrots():
 	# Plant carrots one by one, place their companion for 10x yield,
-	# then fertilize and harvest
+	# fertilize and harvest immediately
 	size = get_world_size()
 	while num_items(Items.Carrot) < CARROT_THRESHOLD:
 		for y in range(size):
@@ -123,18 +123,6 @@ def farm_carrots():
 				for x in range(size - 1, -1, -1):
 					go_to(x, y)
 					grow_carrot_with_companion(x, y)
-		# Harvest pass -- all should be ready after fertilizer
-		for y in range(size):
-			if y % 2 == 0:
-				for x in range(size):
-					go_to(x, y)
-					if can_harvest():
-						harvest()
-			else:
-				for x in range(size - 1, -1, -1):
-					go_to(x, y)
-					if can_harvest():
-						harvest()
 
 def grow_carrot_with_companion(x, y):
 	ensure_soil()
@@ -150,12 +138,10 @@ def grow_carrot_with_companion(x, y):
 		comp_pos = comp[1]
 		comp_x = comp_pos[0]
 		comp_y = comp_pos[1]
-		# Save position, go place companion, come back
+		# Go place companion, come back
 		go_to(comp_x, comp_y)
 		ensure_soil()
-		# Only place if something different is there
 		if get_entity_type() != comp_type:
-			# Don't destroy another carrot we already planted
 			if get_entity_type() == Entities.Carrot:
 				# Skip -- don't overwrite our carrots
 				pass
@@ -170,6 +156,9 @@ def grow_carrot_with_companion(x, y):
 			use_item(Items.Water)
 		use_item(Items.Fertilizer)
 		use_item(Items.Fertilizer)
+	# Harvest immediately for 10x yield
+	if can_harvest():
+		harvest()
 
 # --- Pumpkin farming ---
 
