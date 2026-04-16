@@ -142,8 +142,9 @@ def grow_carrot_with_companion(x, y):
 	comp = get_companion()
 	if comp != None:
 		comp_type = comp[0]
-		comp_x = comp[1]
-		comp_y = comp[2]
+		comp_pos = comp[1]
+		comp_x = comp_pos[0]
+		comp_y = comp_pos[1]
 		# Save position, go place companion, come back
 		go_to(comp_x, comp_y)
 		ensure_soil()
