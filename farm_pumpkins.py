@@ -16,22 +16,24 @@ CARROT_THRESHOLD = 750000
 POWER_THRESHOLD = 1000
 
 def go_to(tx, ty):
+	size = get_world_size()
 	cx = get_pos_x()
 	cy = get_pos_y()
-	dx = tx - cx
-	if dx > 0:
+	# Pick shortest path using wrap-around
+	dx = (tx - cx) % size
+	if dx > size / 2:
+		for i in range(size - dx):
+			move(West)
+	else:
 		for i in range(dx):
 			move(East)
-	elif dx < 0:
-		for i in range(-dx):
-			move(West)
-	dy = ty - cy
-	if dy > 0:
+	dy = (ty - cy) % size
+	if dy > size / 2:
+		for i in range(size - dy):
+			move(South)
+	else:
 		for i in range(dy):
 			move(North)
-	elif dy < 0:
-		for i in range(-dy):
-			move(South)
 
 def ensure_soil():
 	if get_ground_type() != Grounds.Soil:
