@@ -35,7 +35,7 @@ Canonical names from the wiki. Use this to validate code before running in-game.
 - `Entities.Grass`
 - `Entities.Bush`
 - `Entities.Tree`
-- `Entities.Carrots`
+- `Entities.Carrot`
 - `Entities.Pumpkin`
 - `Entities.Sunflower`
 - `Entities.Cactus`

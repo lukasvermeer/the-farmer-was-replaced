@@ -37,10 +37,10 @@ def plant_carrot_tile():
 	if get_ground_type() != Grounds.Soil:
 		till()
 	entity = get_entity_type()
-	if entity != Entities.Carrots:
+	if entity != Entities.Carrot:
 		if entity != None:
 			harvest()
-		plant(Entities.Carrots)
+		plant(Entities.Carrot)
 	if not can_harvest():
 		if get_water() < 0.75:
 			use_item(Items.Water)

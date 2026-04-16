@@ -22,7 +22,7 @@ VALID_UNLOCKS = {
 }
 
 VALID_ENTITIES = {
-    "Grass", "Bush", "Tree", "Carrots", "Pumpkin", "Sunflower",
+    "Grass", "Bush", "Tree", "Carrot", "Pumpkin", "Sunflower",
     "Cactus", "Hedge", "Treasure", "Dinosaur",
 }
 
