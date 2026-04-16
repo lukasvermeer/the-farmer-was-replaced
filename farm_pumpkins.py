@@ -43,37 +43,42 @@ def farm_sunflowers():
 	# Plant sunflowers on whole field, grow them, harvest the one
 	# with max petals for power = sqrt(num_sunflowers)
 	size = get_world_size()
-	# Plant pass
-	for y in range(size):
-		if y % 2 == 0:
-			for x in range(size):
-				go_to(x, y)
-				ensure_soil()
-				entity = get_entity_type()
-				if entity != Entities.Sunflower:
-					if entity != None:
-						harvest()
-					plant(Entities.Sunflower)
-				if not can_harvest():
-					if get_water() < 0.75:
-						use_item(Items.Water)
-					use_item(Items.Fertilizer)
-					use_item(Items.Fertilizer)
-		else:
-			for x in range(size - 1, -1, -1):
-				go_to(x, y)
-				ensure_soil()
-				entity = get_entity_type()
-				if entity != Entities.Sunflower:
-					if entity != None:
-						harvest()
-					plant(Entities.Sunflower)
-				if not can_harvest():
-					if get_water() < 0.75:
-						use_item(Items.Water)
-					use_item(Items.Fertilizer)
-					use_item(Items.Fertilizer)
-	# Find the sunflower with the most petals and harvest it
+	# Plant and fertilize until all grown
+	all_ready = False
+	while not all_ready:
+		all_ready = True
+		for y in range(size):
+			if y % 2 == 0:
+				for x in range(size):
+					go_to(x, y)
+					ensure_soil()
+					entity = get_entity_type()
+					if entity != Entities.Sunflower:
+						if entity != None:
+							harvest()
+						plant(Entities.Sunflower)
+					if not can_harvest():
+						all_ready = False
+						if get_water() < 0.75:
+							use_item(Items.Water)
+						use_item(Items.Fertilizer)
+						use_item(Items.Fertilizer)
+			else:
+				for x in range(size - 1, -1, -1):
+					go_to(x, y)
+					ensure_soil()
+					entity = get_entity_type()
+					if entity != Entities.Sunflower:
+						if entity != None:
+							harvest()
+						plant(Entities.Sunflower)
+					if not can_harvest():
+						all_ready = False
+						if get_water() < 0.75:
+							use_item(Items.Water)
+						use_item(Items.Fertilizer)
+						use_item(Items.Fertilizer)
+	# All grown -- find the sunflower with the most petals and harvest it
 	max_petals = 0
 	max_x = 0
 	max_y = 0
