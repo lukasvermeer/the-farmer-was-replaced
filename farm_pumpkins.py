@@ -7,9 +7,11 @@
 # - Handles restart with existing pumpkins already on the field
 # - Auto-farms carrots when running low
 
-# Each pumpkin plant costs carrots, and ~20% die and need replanting
-# 1024 tiles * 1.5 (safety margin for replants) ~ 1536
-CARROT_THRESHOLD = 2000
+# Each pumpkin costs 512 carrots to plant at upgrade level 10
+# 1024 tiles = 524,288 carrots per full plant
+# ~20% death rate means ~1.3x replants, so ~680K per cycle
+# Keep a buffer above that
+CARROT_THRESHOLD = 750000
 
 def go_to(tx, ty):
 	cx = get_pos_x()
