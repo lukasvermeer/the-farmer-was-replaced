@@ -4,7 +4,6 @@ Canonical names from the wiki. Use this to validate code before running in-game.
 
 ## Unlocks
 - `Unlocks.Auto_Unlock`
-- `Unlocks.Benchmark`
 - `Unlocks.Cactus`
 - `Unlocks.Carrots`
 - `Unlocks.Costs`

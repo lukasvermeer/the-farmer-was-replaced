@@ -13,7 +13,7 @@ import sys
 import glob
 
 VALID_UNLOCKS = {
-    "Auto_Unlock", "Benchmark", "Cactus", "Carrots", "Costs", "Debug",
+    "Auto_Unlock", "Cactus", "Carrots", "Costs", "Debug",
     "Debug_2", "Dictionaries", "Dinosaurs", "Expand", "Fertilizer",
     "Functions", "Grass", "Leaderboard", "Lists", "Loops", "Mazes",
     "Multi_Trade", "Operators", "Plant", "Polyculture", "Pumpkin",

@@ -34,7 +34,6 @@ def diagnose():
 	quick_print("")
 	quick_print("=== UNLOCKS ===")
 	quick_print("Auto_Unlock: " + num_unlocked(Unlocks.Auto_Unlock))
-	quick_print("Benchmark: " + num_unlocked(Unlocks.Benchmark))
 	quick_print("Cactus: " + num_unlocked(Unlocks.Cactus))
 	quick_print("Carrots: " + num_unlocked(Unlocks.Carrots))
 	quick_print("Costs: " + num_unlocked(Unlocks.Costs))
