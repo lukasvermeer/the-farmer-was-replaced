@@ -59,35 +59,52 @@ def plant_and_grow_cacti():
 						use_item(Items.Fertilizer)
 
 def sort_rows():
-	# Bubble sort each row West to East (ascending)
+	# Cocktail shaker sort each row with shrinking bounds
 	size = get_world_size()
 	for y in range(size):
-		# Repeat until row is sorted
-		sorted_row = False
-		while not sorted_row:
-			sorted_row = True
-			for x in range(size - 1):
+		lower = 0
+		upper = size - 1
+		while lower < upper:
+			# Forward pass: bubble largest to upper bound
+			new_upper = lower
+			for x in range(lower, upper):
 				go_to(x, y)
-				current = measure()
-				right = measure(East)
-				if current > right:
+				if measure() > measure(East):
 					swap(East)
-					sorted_row = False
+					new_upper = x
+			upper = new_upper
+			# Backward pass: bubble smallest to lower bound
+			new_lower = upper
+			for x in range(upper, lower, -1):
+				go_to(x, y)
+				if measure() < measure(West):
+					swap(West)
+					new_lower = x
+			lower = new_lower
 
 def sort_columns():
-	# Bubble sort each column South to North (ascending)
+	# Cocktail shaker sort each column with shrinking bounds
 	size = get_world_size()
 	for x in range(size):
-		sorted_col = False
-		while not sorted_col:
-			sorted_col = True
-			for y in range(size - 1):
+		lower = 0
+		upper = size - 1
+		while lower < upper:
+			# Forward pass: bubble largest to upper bound
+			new_upper = lower
+			for y in range(lower, upper):
 				go_to(x, y)
-				current = measure()
-				above = measure(North)
-				if current > above:
+				if measure() > measure(North):
 					swap(North)
-					sorted_col = False
+					new_upper = y
+			upper = new_upper
+			# Backward pass: bubble smallest to lower bound
+			new_lower = upper
+			for y in range(upper, lower, -1):
+				go_to(x, y)
+				if measure() < measure(South):
+					swap(South)
+					new_lower = y
+			lower = new_lower
 
 # Main loop
 while True:
