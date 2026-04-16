@@ -19,7 +19,6 @@ Canonical names from the wiki. Use this to validate code before running in-game.
 - `Unlocks.Lists`
 - `Unlocks.Loops`
 - `Unlocks.Mazes`
-- `Unlocks.Multi_Trade`
 - `Unlocks.Operators`
 - `Unlocks.Plant`
 - `Unlocks.Polyculture`
