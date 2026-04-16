@@ -45,10 +45,12 @@ NAMESPACES = {
 
 # Match patterns like Unlocks.Something, Items.Something, etc.
 PATTERN = re.compile(r'\b(Unlocks|Items|Entities|Grounds)\.(\w+)')
+PRINT_CONCAT = re.compile(r'(quick_print|print)\(.*"\s*\+|\+\s*".*\)')
 
 
 def validate_file(filepath):
     errors = []
+    warnings = []
     with open(filepath) as f:
         for lineno, line in enumerate(f, 1):
             # Skip comments
@@ -59,7 +61,10 @@ def validate_file(filepath):
                 valid_set = NAMESPACES[namespace]
                 if name not in valid_set:
                     errors.append((lineno, namespace, name))
-    return errors
+            # Check for string concatenation in print calls
+            if PRINT_CONCAT.search(stripped):
+                warnings.append((lineno, "print() uses + concatenation; use comma-separated args instead"))
+    return errors, warnings
 
 
 def main():
@@ -73,9 +78,10 @@ def main():
         return
 
     total_errors = 0
+    total_warnings = 0
     for filepath in files:
-        errors = validate_file(filepath)
-        if errors:
+        errors, warnings = validate_file(filepath)
+        if errors or warnings:
             for lineno, namespace, name in errors:
                 print(f"ERROR {filepath}:{lineno} - {namespace}.{name} is not a valid constant")
                 # Suggest closest match
@@ -83,7 +89,10 @@ def main():
                 for valid_name in sorted(valid_set):
                     if valid_name.lower().startswith(name[:3].lower()):
                         print(f"  Did you mean {namespace}.{valid_name}?")
+            for lineno, msg in warnings:
+                print(f"WARN  {filepath}:{lineno} - {msg}")
             total_errors += len(errors)
+            total_warnings += len(warnings)
         else:
             print(f"OK    {filepath}")
 
